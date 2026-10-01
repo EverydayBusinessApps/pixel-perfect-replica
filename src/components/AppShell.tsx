@@ -7,6 +7,7 @@ const nav = [
   { to: "/specials", label: "Specials", icon: "✦" },
   { to: "/buying", label: "Buying", icon: "▣" },
   { to: "/forecast", label: "Forecast", icon: "◔" },
+  { to: "/insights", label: "Insights", icon: "▥" },
   { to: "/settings", label: "Settings", icon: "⚙" },
 ] as const;
 
