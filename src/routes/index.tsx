@@ -71,6 +71,13 @@ function Dashboard() {
             <span className="pb-2 text-sm font-bold text-muted-foreground">/ 100</span>
           </div>
 
+          <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-gradient-to-r from-good via-warn to-danger" style={{ width: `${wasteRisk}%` }} />
+          </div>
+          <p className="mt-4 text-sm font-medium text-muted-foreground">Medium. Bread, lettuce and chicken are the main worries this week.</p>
+        </Panel>
+      </div>
+
       <Link to="/story" className="glass flex items-center gap-4 rounded-2xl border-l-4 border-gold p-4 transition-colors hover:bg-card">
         <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-gold">▶</span>
         <span className="min-w-0 flex-1"><span className="block text-sm font-extrabold">Monday special from Sunday surplus</span><span className="block text-xs font-semibold text-muted-foreground">See a week with KitchenSense: waste €312 → €184</span></span>
@@ -103,13 +110,6 @@ function Dashboard() {
           </div>
         </div>
       </section>
-
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full rounded-full bg-gradient-to-r from-good via-warn to-danger" style={{ width: `${wasteRisk}%` }} />
-          </div>
-          <p className="mt-4 text-sm font-medium text-muted-foreground">Medium. Bread, lettuce and chicken are the main worries this week.</p>
-        </Panel>
-      </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Panel title="Stock at a glance" aside={<Link to="/stock" className="text-xs font-bold text-gold-deep">View all →</Link>} className="lg:col-span-2">
