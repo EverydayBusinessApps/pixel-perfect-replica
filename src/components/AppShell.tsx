@@ -132,3 +132,14 @@ export function Panel({ title, aside, children, className = "", collapsible = fa
     </section>
   );
 }
+
+export function EmptyState({ icon = "✦", title, body, action }: { icon?: string; title: string; body: string; action?: ReactNode }) {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-border bg-card px-6 py-10 text-center">
+      <span className="grid size-12 place-items-center rounded-full bg-primary text-lg text-gold">{icon}</span>
+      <p className="text-lg font-extrabold">{title}</p>
+      <p className="max-w-sm text-sm font-medium text-muted-foreground">{body}</p>
+      {action}
+    </div>
+  );
+}
