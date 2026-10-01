@@ -18,6 +18,7 @@ export const menu: MenuItem[] = [
   { name: "Rocket & Pear Salad", sold: [48, 42, 39, 35, 30, 26, 24, 19], price: 10.5, cost: 3.6, costPrev: 3.2, ingredients: ["Rocket", "Pear", "Cheddar"] },
   { name: "Croissant", sold: [160, 150, 148, 141, 139, 130, 128, 124], price: 3.2, cost: 0.95, costPrev: 0.8, ingredients: ["Croissants"] },
   { name: "Caesar Wrap", sold: [64, 60, 58, 51, 49, 44, 40, 38], price: 11.0, cost: 3.9, costPrev: 3.3, ingredients: ["Chicken breast", "Lettuce", "Parmesan", "Tortilla wraps"] },
+  { name: "Mocha", sold: [120, 128, 135, 142, 150, 158, 165, 172], price: 4.4, cost: 0.85, costPrev: 0.75, ingredients: ["Espresso beans", "Milk"] },
 ];
 
 export const total = (m: MenuItem) => m.sold.reduce((a, b) => a + b, 0);
@@ -35,19 +36,26 @@ export function ingredientUsage() {
   return [...map.entries()].map(([name, dishes]) => ({ name, dishes })).sort((a, b) => b.dishes.length - a.dishes.length);
 }
 
-const TARGET_MARGIN = 70;
+/** Approximate purchase price per ingredient (per pack/order unit). */
+export const ingredientPrices: Record<string, number> = {
+  "Smoked salmon": 22.5,
+  "Rocket": 9.4,
+  "Avocados": 8.6,
+  "Parmesan": 8.9,
+  "Bacon rashers": 7.8,
+  "Tortilla wraps": 5.4,
+  "Croissants": 16.0,
+  "Lettuce": 4.8,
+  "Pear": 4.2,
+  "Tomatoes": 6.3,
+  "Potatoes": 5.5,
+  "Oats": 9.8,
+  "Cheddar": 11.5,
+  "Chicken breast": 12.4,
+  "Milk": 3.2,
+  "Sourdough": 12.0,
+  "Espresso beans": 42.0,
+  "Free-range eggs": 14.5,
+};
 
-/** Suggest a price that brings margin back to target (rounded to 10c), only when cost has risen and margin dropped below target. */
-export function priceSuggestions() {
-  return menu
-    .map((m) => {
-      const now = margin(m.price, m.cost);
-      const rise = Math.round(((m.cost - m.costPrev) / m.costPrev) * 100);
-      const target = Math.ceil((m.cost / (1 - TARGET_MARGIN / 100)) * 10) / 10;
-      const suggested = Math.max(m.price, Math.min(target, m.price * 1.12)); // cap rises at 12%
-      return { ...m, now, rise, suggested: Math.round(suggested * 10) / 10, newMargin: margin(suggested, m.cost) };
-    })
-    .filter((s) => s.rise > 0 && s.now < TARGET_MARGIN && s.suggested > s.price)
-    .sort((a, b) => a.now - b.now);
-}
-export { TARGET_MARGIN };
+export const priceOf = (name: string) => ingredientPrices[name] ?? 0;
