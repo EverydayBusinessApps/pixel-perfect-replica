@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader, Panel } from "@/components/AppShell";
-import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts } from "@/lib/insights";
+import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts, isDrink } from "@/lib/insights";
 import { stock } from "@/lib/data";
 
 export const Route = createFileRoute("/insights")({
@@ -58,23 +58,31 @@ function InsightsPage() {
       </div>
 
       <Panel title="What's selling" aside={<span className="text-xs font-bold text-muted-foreground">Plates sold · 8 weeks</span>}>
-        <div className="space-y-3">
-          {ranked.map((m, idx) => {
-            const t = trend(m);
-            const tag = t >= 5 ? "bg-good/15 text-good" : t <= -5 ? "bg-danger/15 text-danger" : "bg-warn/15 text-warn";
-            return (
-              <div key={m.name} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4">
-                <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-gold-deep">{idx + 1}</span>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate font-extrabold">{m.name}</p>
-                  <p className="text-xs font-semibold text-muted-foreground">{total(m).toLocaleString()} sold · {margin(m.price, m.cost)}% margin</p>
-                </div>
-                <div className="hidden sm:block"><Spark data={m.sold} /></div>
-                <span className={`shrink-0 rounded-md px-2 py-1 text-[10px] font-bold ${tag}`}>{t > 0 ? "↑" : t < 0 ? "↓" : "→"} {Math.abs(t)}%</span>
+        {(["Food", "Drinks"] as const).map((groupLabel) => {
+          const list = ranked.filter((m) => (groupLabel === "Drinks") === isDrink(m.name));
+          return (
+            <div key={groupLabel} className={groupLabel === "Drinks" ? "mt-4" : ""}>
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-gold-deep">{groupLabel}</p>
+              <div className="space-y-3">
+                {list.map((m, idx) => {
+                  const t = trend(m);
+                  const tag = t >= 5 ? "bg-good/15 text-good" : t <= -5 ? "bg-danger/15 text-danger" : "bg-warn/15 text-warn";
+                  return (
+                    <div key={m.name} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4">
+                      <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-gold-deep">{idx + 1}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-extrabold">{m.name}</p>
+                        <p className="text-xs font-semibold text-muted-foreground">{total(m).toLocaleString()} sold · {margin(m.price, m.cost)}% margin</p>
+                      </div>
+                      <div className="hidden sm:block"><Spark data={m.sold} /></div>
+                      <span className={`shrink-0 rounded-md px-2 py-1 text-[10px] font-bold ${tag}`}>{t > 0 ? "↑" : t < 0 ? "↓" : "→"} {Math.abs(t)}%</span>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
         <p className="mt-4 text-sm text-muted-foreground">
           <strong className="text-foreground">Rocket & Pear Salad</strong> and <strong className="text-foreground">Caesar Wrap</strong> are falling fast. Consider dropping one — together they rely on 5 ingredients nothing else uses.
         </p>
