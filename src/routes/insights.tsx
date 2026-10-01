@@ -120,27 +120,16 @@ function InsightsPage() {
         </Panel>
       </div>
 
-      <Panel title="Suggested price changes" aside={<span className="text-xs font-bold text-muted-foreground">Target {TARGET_MARGIN}% margin</span>}>
-        <p className="mb-3 text-sm text-muted-foreground">Ingredient costs have gone up over the last 3 months. Rises are capped at 12% so regulars don't notice a jump.</p>
+      <Panel title="Costs on the rise" aside={<span className="text-xs font-bold text-muted-foreground">Last 3 months</span>}>
+        <p className="mb-3 text-sm text-muted-foreground">Ingredient costs that have crept up, so you know what to watch before your next menu print.</p>
         <div className="grid gap-3 md:grid-cols-2">
-          {prices.map((p) => (
-            <div key={p.name} className="rounded-2xl border border-border bg-card p-4">
+          {[...menu].filter((m) => m.cost > m.costPrev).sort((a, b) => (b.cost - b.costPrev) / b.costPrev - (a.cost - a.costPrev) / a.costPrev).map((m) => (
+            <div key={m.name} className="rounded-2xl border border-border bg-card p-4">
               <div className="flex items-center justify-between gap-2">
-                <p className="font-extrabold">{p.name}</p>
-                <span className="rounded-md bg-danger/15 px-2 py-1 text-[10px] font-bold text-danger">Cost +{p.rise}%</span>
+                <p className="font-extrabold">{m.name}</p>
+                <span className="rounded-md bg-warn/15 px-2 py-1 text-[10px] font-bold text-warn">+{Math.round(((m.cost - m.costPrev) / m.costPrev) * 100)}%</span>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">Plate cost {eur(p.costPrev)} → {eur(p.cost)}</p>
-              <div className="mt-3 flex items-end justify-between gap-3">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Price</p>
-                  <p className="font-display text-2xl font-bold">
-                    <span className="text-base text-muted-foreground line-through">{eur(p.price)}</span> {eur(p.suggested)}
-                  </p>
-                </div>
-                <p className="text-right text-xs font-bold">
-                  Margin {p.now}% → <span className="text-good">{p.newMargin}%</span>
-                </p>
-              </div>
+              <p className="mt-1 text-xs text-muted-foreground">Plate cost {eur(m.costPrev)} → {eur(m.cost)} · margin now {margin(m.price, m.cost)}%</p>
             </div>
           ))}
         </div>
