@@ -57,7 +57,7 @@ function InsightsPage() {
         ))}
       </div>
 
-      <Panel title="What's selling" aside={<span className="text-xs font-bold text-muted-foreground">Plates sold · 8 weeks</span>}>
+      <Panel title="What's selling" aside={<span className="text-xs font-bold text-muted-foreground">Plates sold · 8 weeks</span>} collapsible>
         {(["Food", "Drinks"] as const).map((groupLabel) => {
           const list = ranked.filter((m) => (groupLabel === "Drinks") === isDrink(m.name));
           return (
@@ -89,7 +89,7 @@ function InsightsPage() {
       </Panel>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>}>
+        <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">Used in more than one dish — less risk of waste.</p>
           <div className="space-y-2">
             {shared.map((u) => (
@@ -104,7 +104,7 @@ function InsightsPage() {
           </div>
         </Panel>
 
-        <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>}>
+        <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">If that dish stops selling, these end up in the bin. Sorted by how much each costs you.</p>
           <div className="space-y-2">
             {single.map((u) => {
@@ -130,7 +130,7 @@ function InsightsPage() {
         </Panel>
       </div>
 
-      <Panel title="Costs on the rise" aside={<span className="text-xs font-bold text-muted-foreground">Last 3 months</span>}>
+      <Panel title="Costs on the rise" aside={<span className="text-xs font-bold text-muted-foreground">Last 3 months</span>} collapsible>
         <p className="mb-3 text-sm text-muted-foreground">Ingredient costs that have crept up, so you know what to watch before your next menu print.</p>
         <div className="grid gap-3 md:grid-cols-2">
           {[...menu].filter((m) => m.cost > m.costPrev).sort((a, b) => (b.cost - b.costPrev) / b.costPrev - (a.cost - a.costPrev) / a.costPrev).map((m) => (
@@ -146,7 +146,7 @@ function InsightsPage() {
       </Panel>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>}>
+        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">You print your menus, so a price change is only flagged when a dish is about to stop paying for itself.</p>
           {alerts.length === 0 ? (
             <div className="rounded-xl border border-good/30 bg-good/10 p-4">
@@ -170,7 +170,7 @@ function InsightsPage() {
           )}
         </Panel>
 
-        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>}>
+        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">Thin margins that are fine — they arrive alongside bigger orders.</p>
           <div className="space-y-2">
             {leaders.map((l) => (
