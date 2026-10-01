@@ -52,7 +52,7 @@ function Dashboard() {
               const s = statusStyles[statusOf(idea.days)];
               const on = picked[idea.dish];
               return (
-                <div key={idea.dish} className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-nowrap sm:gap-4">
+                <div key={idea.dish} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center sm:gap-4">
                   <span className={`grid size-11 shrink-0 place-items-center rounded-xl text-sm font-extrabold ${s.badge}`}>{idea.days === 1 ? "24h" : "48h"}</span>
                   <div className="min-w-0 flex-1">
                     <p className="font-extrabold">{idea.dish} <span className="font-semibold text-muted-foreground">· €{idea.price.toFixed(2)}</span></p>
@@ -60,7 +60,7 @@ function Dashboard() {
                     <p className="mt-0.5 text-[11px] font-semibold text-muted-foreground">{idea.note}</p>
                     <p className="mt-0.5 text-[11px] font-bold text-danger">Saves up to €{idea.eur.toFixed(2)} of stock</p>
                   </div>
-                  <button onClick={() => setPicked({ ...picked, [idea.dish]: !on })} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold ${on ? "bg-good text-primary-foreground" : "bg-primary text-primary-foreground"}`}>{on ? "✓ On specials" : "Make it a special"}</button>
+                  <button onClick={() => setPicked({ ...picked, [idea.dish]: !on })} className={`col-span-2 w-full shrink-0 rounded-full px-4 py-2 text-xs font-bold sm:col-span-1 sm:w-auto ${on ? "bg-good text-primary-foreground" : "bg-primary text-primary-foreground"}`}>{on ? "✓ On specials" : "Make it a special"}</button>
                 </div>
               );
             })}
