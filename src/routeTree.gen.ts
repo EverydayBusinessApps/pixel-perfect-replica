@@ -10,33 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BuyingRouteImport } from './routes/buying'
+import { Route as ForecastRouteImport } from './routes/forecast'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SpecialsRouteImport } from './routes/specials'
+import { Route as StockRouteImport } from './routes/stock'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BuyingRoute = BuyingRouteImport.update({
+  id: '/buying',
+  path: '/buying',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForecastRoute = ForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpecialsRoute = SpecialsRouteImport.update({
+  id: '/specials',
+  path: '/specials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StockRoute = StockRouteImport.update({
+  id: '/stock',
+  path: '/stock',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/buying': typeof BuyingRoute
+  '/forecast': typeof ForecastRoute
+  '/settings': typeof SettingsRoute
+  '/specials': typeof SpecialsRoute
+  '/stock': typeof StockRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/buying': typeof BuyingRoute
+  '/forecast': typeof ForecastRoute
+  '/settings': typeof SettingsRoute
+  '/specials': typeof SpecialsRoute
+  '/stock': typeof StockRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/buying': typeof BuyingRoute
+  '/forecast': typeof ForecastRoute
+  '/settings': typeof SettingsRoute
+  '/specials': typeof SpecialsRoute
+  '/stock': typeof StockRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/buying' | '/forecast' | '/settings' | '/specials' | '/stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/buying' | '/forecast' | '/settings' | '/specials' | '/stock'
+  id:
+    | '__root__'
+    | '/'
+    | '/buying'
+    | '/forecast'
+    | '/settings'
+    | '/specials'
+    | '/stock'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BuyingRoute: typeof BuyingRoute
+  ForecastRoute: typeof ForecastRoute
+  SettingsRoute: typeof SettingsRoute
+  SpecialsRoute: typeof SpecialsRoute
+  StockRoute: typeof StockRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +106,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/buying': {
+      id: '/buying'
+      path: '/buying'
+      fullPath: '/buying'
+      preLoaderRoute: typeof BuyingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forecast': {
+      id: '/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ForecastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/specials': {
+      id: '/specials'
+      path: '/specials'
+      fullPath: '/specials'
+      preLoaderRoute: typeof SpecialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stock': {
+      id: '/stock'
+      path: '/stock'
+      fullPath: '/stock'
+      preLoaderRoute: typeof StockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BuyingRoute: BuyingRoute,
+  ForecastRoute: ForecastRoute,
+  SettingsRoute: SettingsRoute,
+  SpecialsRoute: SpecialsRoute,
+  StockRoute: StockRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
