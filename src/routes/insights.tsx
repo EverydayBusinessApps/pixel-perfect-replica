@@ -88,7 +88,7 @@ function InsightsPage() {
         </p>
       </Panel>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">Used in more than one dish — less risk of waste.</p>
           <div className="space-y-2">
@@ -145,7 +145,7 @@ function InsightsPage() {
         </div>
       </Panel>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">You print your menus, so a price change is only flagged when a dish is about to stop paying for itself.</p>
           {alerts.length === 0 ? (
