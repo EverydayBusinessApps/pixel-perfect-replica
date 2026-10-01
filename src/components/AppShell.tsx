@@ -14,16 +14,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background text-foreground">
       <div className="pointer-events-none fixed inset-0 bg-ambient" />
-      <div className="pointer-events-none fixed -left-24 -top-24 size-[380px] rounded-full bg-gold/15 blur-3xl floaty" />
-      <div className="pointer-events-none fixed -right-28 top-1/3 size-[360px] rounded-full bg-primary/10 blur-3xl floaty2" />
 
       <div className="relative z-10 mx-auto flex max-w-[1280px] gap-6 px-4 pb-28 pt-4 md:py-6 md:pb-6">
         <aside className="glass sticky top-6 hidden h-[calc(100vh-3rem)] w-64 shrink-0 flex-col gap-1 rounded-[2rem] p-5 md:flex">
-          <div className="mb-8 flex items-center gap-3 px-2">
-            <div className="grid size-11 place-items-center rounded-xl bg-primary font-display font-bold text-primary-foreground shadow-lg">K</div>
+          <div className="mb-8 flex items-center gap-3 rounded-xl border-b-2 border-gold bg-primary p-3 text-primary-foreground">
+            <div className="grid size-11 place-items-center rounded-xl border border-gold bg-primary font-display font-bold text-primary-foreground">K</div>
             <div>
               <p className="font-display text-base font-extrabold leading-none tracking-tight">KitchenSense</p>
-              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Stock & waste helper</p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-primary-foreground/70">Stock & waste helper</p>
             </div>
           </div>
           <nav className="flex flex-col gap-1.5">
@@ -33,7 +31,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 to={n.to}
                 activeOptions={{ exact: true }}
                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-foreground/60 transition-colors hover:bg-card/60"
-                activeProps={{ className: "!bg-primary !text-primary-foreground shadow-lg font-bold" }}
+                activeProps={{ className: "!border-b-2 !border-gold !bg-primary !text-primary-foreground shadow-lg font-bold" }}
               >
                 <span className="text-gold-deep">{n.icon}</span> {n.label}
               </Link>
@@ -60,7 +58,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               to={n.to}
               activeOptions={{ exact: true }}
               className="flex flex-1 flex-col items-center gap-0.5 rounded-2xl py-1.5 text-primary-foreground/55"
-              activeProps={{ className: "!text-gold bg-primary-foreground/10" }}
+              activeProps={{ className: "!border-t-2 !border-gold !text-primary-foreground bg-primary-foreground/10" }}
             >
               <span className="text-base leading-none">{n.icon}</span>
               <span className="text-[10px] font-semibold">{n.label}</span>
