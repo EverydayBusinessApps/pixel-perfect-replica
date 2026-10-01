@@ -95,7 +95,7 @@ function InsightsPage() {
         </Panel>
 
         <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>}>
-          <p className="mb-3 text-sm text-muted-foreground">If that dish stops selling, these end up in the bin.</p>
+          <p className="mb-3 text-sm text-muted-foreground">If that dish stops selling, these end up in the bin. Sorted by how much each costs you.</p>
           <div className="space-y-2">
             {single.map((u) => {
               const dish = menu.find((m) => m.name === u.dishes[0])!;
@@ -104,7 +104,10 @@ function InsightsPage() {
                 <div key={u.name} className="rounded-xl border border-border bg-card p-3">
                   <div className="flex items-center justify-between gap-2">
                     <p className="font-extrabold">{u.name}</p>
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground">{inPantry.has(u.name) ? "In stock" : "Ordered in"}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-gold-deep">{eur(priceOf(u.name))}</span>
+                      <span className="text-[10px] font-bold uppercase text-muted-foreground">{inPantry.has(u.name) ? "In stock" : "Ordered in"}</span>
+                    </div>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
                     Only for {dish.name}
