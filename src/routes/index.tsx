@@ -150,7 +150,7 @@ function Dashboard() {
           <div className="mt-3 grid grid-cols-7 text-center text-[10px] font-bold text-gold/60">
             {forecast.week.map((d) => <span key={d.day}>{d.day}</span>)}
           </div>
-          <p className="mt-6 border-t border-primary-foreground/10 pt-5 text-xs font-medium leading-relaxed text-primary-foreground/70">Saturday looks like your busiest day — rugby nearby. <Link to="/forecast" className="font-bold text-gold">See forecast →</Link></p>
+          <p className="mt-6 border-t border-primary-foreground/10 pt-5 text-xs font-medium leading-relaxed text-primary-foreground/70">Saturday looks like your busiest day — rugby nearby. <Link to="/forecast" className="font-bold text-gold">See busy days →</Link></p>
         </section>
       </div>
     </AppShell>
