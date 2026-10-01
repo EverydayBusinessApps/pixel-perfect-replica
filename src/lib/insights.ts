@@ -23,6 +23,9 @@ export const menu: MenuItem[] = [
   { name: "Kids Breakfast", sold: [64, 58, 61, 66, 60, 63, 59, 62], price: 5.5, cost: 4.6, costPrev: 4.2, ingredients: ["Bacon rashers", "Free-range eggs", "Sourdough"], pairsWith: ["Full Irish Breakfast", "Flat White"] },
 ];
 
+const DRINKS = new Set(["Flat White", "Mocha"]);
+export const isDrink = (name: string) => DRINKS.has(name);
+
 export const total = (m: MenuItem) => m.sold.reduce((a, b) => a + b, 0);
 export const trend = (m: MenuItem) => {
   const first = m.sold.slice(0, 4).reduce((a, b) => a + b, 0);
