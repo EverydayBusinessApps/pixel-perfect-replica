@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { AppShell, EmptyState, PageHeader } from "@/components/AppShell";
+import { OwnerSpecialCreator } from "@/components/OwnerSpecialCreator";
 import { specials, stock } from "@/lib/data";
 import { parseEur, specialPriceHint, TARGET_MARGIN } from "@/lib/kitchen";
 
@@ -65,6 +66,7 @@ function SpecialsPage() {
         })}
       </div>
       )}
+      <OwnerSpecialCreator />
       <p className="text-center text-xs font-medium text-muted-foreground">Price hints apply to the specials board only. Printed menu prices stay fixed.</p>
     </AppShell>
   );
