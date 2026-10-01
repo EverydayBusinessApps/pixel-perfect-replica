@@ -30,7 +30,10 @@ function SpecialsPage() {
             <article key={s.name} className={`relative flex flex-col overflow-hidden rounded-[2rem] p-6 sm:p-7 ${dark ? "bg-primary text-primary-foreground shadow-hero" : "glass"}`}>
               <div className="flex items-center justify-between gap-2">
                 <span className={`inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${dark ? "text-gold" : "text-gold-deep"}`}>{reasonIcon[s.reason]} {s.reason}</span>
-...
+                <span className={`text-xs font-bold ${dark ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{s.price}</span>
+              </div>
+              <h2 className="mt-5 text-2xl font-extrabold leading-tight">{s.name}</h2>
+              <p className={`mt-3 text-sm font-medium leading-relaxed ${dark ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{s.why}</p>
               <p className={`mt-3 text-xs font-bold ${dark ? "text-gold" : "text-gold-deep"}`}>Uses: {s.uses}</p>
               <div className="mt-6 flex items-end justify-between gap-4 pt-2">
                 <div>
