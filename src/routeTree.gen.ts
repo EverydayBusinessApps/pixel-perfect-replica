@@ -16,6 +16,8 @@ import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SpecialsRouteImport } from './routes/specials'
 import { Route as StockRouteImport } from './routes/stock'
+import { Route as StoryRouteImport } from './routes/story'
+import { Route as WasteRouteImport } from './routes/waste'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +54,16 @@ const StockRoute = StockRouteImport.update({
   path: '/stock',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoryRoute = StoryRouteImport.update({
+  id: '/story',
+  path: '/story',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WasteRoute = WasteRouteImport.update({
+  id: '/waste',
+  path: '/waste',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +73,8 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/specials': typeof SpecialsRoute
   '/stock': typeof StockRoute
+  '/story': typeof StoryRoute
+  '/waste': typeof WasteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +84,8 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/specials': typeof SpecialsRoute
   '/stock': typeof StockRoute
+  '/story': typeof StoryRoute
+  '/waste': typeof WasteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +96,8 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/specials': typeof SpecialsRoute
   '/stock': typeof StockRoute
+  '/story': typeof StoryRoute
+  '/waste': typeof WasteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +109,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/specials'
     | '/stock'
+    | '/story'
+    | '/waste'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +120,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/specials'
     | '/stock'
+    | '/story'
+    | '/waste'
   id:
     | '__root__'
     | '/'
@@ -109,6 +131,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/specials'
     | '/stock'
+    | '/story'
+    | '/waste'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +143,8 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SpecialsRoute: typeof SpecialsRoute
   StockRoute: typeof StockRoute
+  StoryRoute: typeof StoryRoute
+  WasteRoute: typeof WasteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +198,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StockRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/story': {
+      id: '/story'
+      path: '/story'
+      fullPath: '/story'
+      preLoaderRoute: typeof StoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/waste': {
+      id: '/waste'
+      path: '/waste'
+      fullPath: '/waste'
+      preLoaderRoute: typeof WasteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +223,8 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SpecialsRoute: SpecialsRoute,
   StockRoute: StockRoute,
+  StoryRoute: StoryRoute,
+  WasteRoute: WasteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
