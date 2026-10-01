@@ -11,4 +11,4 @@
 - [x] End-of-service waste log (prep / plate / spoilage) at /waste
 - [x] Demo story: Monday special from Sunday surplus + before/after week at /story
 - [x] Teaching empty states
-- [ ] Owner-led AI special creator using selected pantry ingredients
+- [x] Owner-led AI special creator using selected pantry ingredients
