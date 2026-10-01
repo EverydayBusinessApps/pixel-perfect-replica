@@ -92,7 +92,8 @@ export function PageHeader({ eyebrow, title, children }: { eyebrow: string; titl
 
 export function Panel({ title, aside, children, className = "", collapsible = false }: { title?: string; aside?: ReactNode; children: ReactNode; className?: string; collapsible?: boolean }) {
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(!isMobile);
+  const [toggled, setToggled] = useState<boolean | null>(null);
+  const open = toggled ?? !isMobile;
   const header = (
     <div className="mb-5 flex items-center justify-between gap-3">
       <h3 className="text-xl font-bold">{title}</h3>
@@ -114,7 +115,7 @@ export function Panel({ title, aside, children, className = "", collapsible = fa
   }
   return (
     <section className={`glass rounded-[2rem] p-5 sm:p-7 ${className}`}>
-      <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left">
+      <button type="button" onClick={() => setToggled(!open)} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left">
         <h3 className="text-xl font-bold">{title}</h3>
         <span className="flex items-center gap-2">
           {aside}
