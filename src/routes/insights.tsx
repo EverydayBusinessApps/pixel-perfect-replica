@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader, Panel } from "@/components/AppShell";
-import { menu, total, trend, margin, ingredientUsage, priceOf } from "@/lib/insights";
+import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts } from "@/lib/insights";
 import { stock } from "@/lib/data";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
     meta: [
       { title: "Menu insights — KitchenSense" },
-      { name: "description", content: "Eight weeks of sales: best and worst sellers, how dishes share ingredients, and which single-use items cost you the most." },
+      { name: "description", content: "Eight weeks of sales: best and worst sellers, shared ingredients, single-use costs, and which low-margin dishes earn their keep as part of a bigger order." },
       { property: "og:title", content: "Menu insights — KitchenSense" },
       { property: "og:description", content: "See what sells, what doesn't, and what your menu shares with the pantry." },
       { property: "og:type", content: "website" },
@@ -36,6 +36,8 @@ function InsightsPage() {
   const shared = usage.filter((u) => u.dishes.length > 1);
   const single = usage.filter((u) => u.dishes.length === 1).sort((a, b) => priceOf(b.name) - priceOf(a.name));
   const inPantry = new Set(stock.map((s) => s.name));
+  const alerts = priceAlerts();
+  const leaders = lossLeaders();
 
   return (
     <AppShell>
@@ -134,6 +136,49 @@ function InsightsPage() {
           ))}
         </div>
       </Panel>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>}>
+          <p className="mb-3 text-sm text-muted-foreground">You print your menus, so a price change is only flagged when a dish is about to stop paying for itself.</p>
+          {alerts.length === 0 ? (
+            <div className="rounded-xl border border-good/30 bg-good/10 p-4">
+              <p className="font-extrabold text-good">All clear</p>
+              <p className="mt-1 text-xs text-muted-foreground">No dish is close to breakeven at today's ingredient costs — nothing needs a price change at your next print.</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {alerts.map((a) => (
+                <div key={a.name} className="rounded-xl border border-danger/30 bg-card p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-extrabold">{a.name}</p>
+                    <span className="rounded-md bg-danger/15 px-2 py-1 text-[10px] font-bold text-danger">Breakeven risk</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Margin {a.now}% now, {a.projected}% if costs rise again. Consider {eur(a.suggested)} at the next print.
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </Panel>
+
+        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>}>
+          <p className="mb-3 text-sm text-muted-foreground">Thin margins that are fine — they arrive alongside bigger orders.</p>
+          <div className="space-y-2">
+            {leaders.map((l) => (
+              <div key={l.name} className="rounded-xl border border-gold/40 bg-card p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-extrabold">{l.name}</p>
+                  <span className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-bold text-gold-deep">{l.now}% margin</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Usually ordered with <strong className="text-foreground">{l.partners.map((p) => p.name).join(" + ")}</strong> — the full basket pays <strong className="text-good">{l.basketMargin}%</strong>.
+                </p>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
     </AppShell>
   );
 }

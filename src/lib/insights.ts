@@ -61,3 +61,29 @@ export const ingredientPrices: Record<string, number> = {
 };
 
 export const priceOf = (name: string) => ingredientPrices[name] ?? 0;
+
+/** Low-margin dishes that are usually ordered alongside bigger-ticket items. */
+export function lossLeaders() {
+  return menu
+    .filter((m) => m.pairsWith?.length && margin(m.price, m.cost) < 25)
+    .map((m) => {
+      const partners = m.pairsWith!.map((n) => menu.find((x) => x.name === n)!).filter(Boolean);
+      const price = m.price + partners.reduce((a, p) => a + p.price, 0);
+      const cost = m.cost + partners.reduce((a, p) => a + p.cost, 0);
+      return { ...m, now: margin(m.price, m.cost), partners, basketMargin: margin(price, cost) };
+    });
+}
+
+/** Price flags ONLY when a dish is drifting into breakeven territory — menus are printed, so no routine repricing. */
+export function priceAlerts() {
+  return menu
+    .map((m) => {
+      const now = margin(m.price, m.cost);
+      const projectedCost = m.cost + (m.cost - m.costPrev); // if the same rise happens again
+      const projected = margin(m.price, projectedCost);
+      const suggested = Math.ceil((projectedCost / 0.75) * 10) / 10; // restores ~25% margin
+      return { name: m.name, price: m.price, cost: m.cost, now, projected, suggested };
+    })
+    .filter((m) => m.now <= 12 || m.projected <= 5)
+    .sort((a, b) => a.now - b.now);
+}
