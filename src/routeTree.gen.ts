@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BuyingRouteImport } from './routes/buying'
 import { Route as ForecastRouteImport } from './routes/forecast'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SpecialsRouteImport } from './routes/specials'
 import { Route as StockRouteImport } from './routes/stock'
@@ -29,6 +30,11 @@ const BuyingRoute = BuyingRouteImport.update({
 const ForecastRoute = ForecastRouteImport.update({
   id: '/forecast',
   path: '/forecast',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/buying': typeof BuyingRoute
   '/forecast': typeof ForecastRoute
+  '/insights': typeof InsightsRoute
   '/settings': typeof SettingsRoute
   '/specials': typeof SpecialsRoute
   '/stock': typeof StockRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/buying': typeof BuyingRoute
   '/forecast': typeof ForecastRoute
+  '/insights': typeof InsightsRoute
   '/settings': typeof SettingsRoute
   '/specials': typeof SpecialsRoute
   '/stock': typeof StockRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/buying': typeof BuyingRoute
   '/forecast': typeof ForecastRoute
+  '/insights': typeof InsightsRoute
   '/settings': typeof SettingsRoute
   '/specials': typeof SpecialsRoute
   '/stock': typeof StockRoute
@@ -75,14 +84,28 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/buying' | '/forecast' | '/settings' | '/specials' | '/stock'
+    | '/'
+    | '/buying'
+    | '/forecast'
+    | '/insights'
+    | '/settings'
+    | '/specials'
+    | '/stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/buying' | '/forecast' | '/settings' | '/specials' | '/stock'
+  to:
+    | '/'
+    | '/buying'
+    | '/forecast'
+    | '/insights'
+    | '/settings'
+    | '/specials'
+    | '/stock'
   id:
     | '__root__'
     | '/'
     | '/buying'
     | '/forecast'
+    | '/insights'
     | '/settings'
     | '/specials'
     | '/stock'
@@ -92,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BuyingRoute: typeof BuyingRoute
   ForecastRoute: typeof ForecastRoute
+  InsightsRoute: typeof InsightsRoute
   SettingsRoute: typeof SettingsRoute
   SpecialsRoute: typeof SpecialsRoute
   StockRoute: typeof StockRoute
@@ -118,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/forecast'
       fullPath: '/forecast'
       preLoaderRoute: typeof ForecastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -148,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BuyingRoute: BuyingRoute,
   ForecastRoute: ForecastRoute,
+  InsightsRoute: InsightsRoute,
   SettingsRoute: SettingsRoute,
   SpecialsRoute: SpecialsRoute,
   StockRoute: StockRoute,
