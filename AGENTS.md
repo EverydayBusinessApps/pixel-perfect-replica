@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep AI-generated special creation in an unauthenticated TanStack server function with gateway credentials and prompts confined to server-only modules, because the current prototype has no user accounts.
