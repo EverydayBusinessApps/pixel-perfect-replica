@@ -1,15 +1,15 @@
 import { stock, type StockItem } from "./data";
 
-/** One-tap special ideas for an ingredient that must be used soon. */
-const quickIdeas: Record<string, { dish: string; price: number }> = {
-  "Chicken breast": { dish: "Chicken, Bacon & Avo Toastie", price: 12.5 },
-  Lettuce: { dish: "Chicken Caesar Bowl", price: 11.0 },
-  Avocados: { dish: "Smashed Avo on Sourdough", price: 10.5 },
-  Sourdough: { dish: "Tomato & Sourdough Panzanella", price: 9.5 },
-  Croissants: { dish: "Almond Croissant Bake", price: 4.2 },
-  Tomatoes: { dish: "Roast Tomato Soup", price: 7.0 },
-  Milk: { dish: "Rice Pudding Pot", price: 4.5 },
-  "Smoked salmon": { dish: "Salmon & Scrambled Eggs", price: 13.0 },
+/** One-tap special ideas for an ingredient that must be used soon. eur = money at risk if the stock is binned. */
+const quickIdeas: Record<string, { dish: string; price: number; eur: number }> = {
+  "Chicken breast": { dish: "Chicken, Bacon & Avo Toastie", price: 12.5, eur: 12.0 },
+  Lettuce: { dish: "Chicken Caesar Bowl", price: 11.0, eur: 4.8 },
+  Avocados: { dish: "Smashed Avo on Sourdough", price: 10.5, eur: 8.6 },
+  Sourdough: { dish: "Tomato & Sourdough Panzanella", price: 9.5, eur: 12.0 },
+  Croissants: { dish: "Almond Croissant Bake", price: 4.2, eur: 16.0 },
+  Tomatoes: { dish: "Roast Tomato Soup", price: 7.0, eur: 6.3 },
+  Milk: { dish: "Rice Pudding Pot", price: 4.5, eur: 3.2 },
+  "Smoked salmon": { dish: "Salmon & Scrambled Eggs", price: 13.0, eur: 22.5 },
 };
 
 /** Spoil radar: everything that must be used within 48 hours. */
@@ -17,8 +17,12 @@ export function spoilRadar(items: StockItem[] = stock) {
   return items
     .filter((i) => i.days <= 2)
     .sort((a, b) => a.days - b.days)
-    .map((i) => ({ ...i, idea: quickIdeas[i.name] ?? { dish: `${i.name} special`, price: 9 } }));
+    .map((i) => ({ ...i, idea: quickIdeas[i.name] ?? { dish: `${i.name} special`, price: 9, eur: 5 } }));
 }
+
+/** Total euro value at risk across the spoil radar. */
+export const radarAtRisk = (items: ReturnType<typeof spoilRadar>) =>
+  items.reduce((a, i) => a + i.idea.eur, 0);
 
 /** Plate cost for each suggested special — used only for specials price hints (printed menu stays fixed). */
 export const specialCost: Record<string, number> = {
