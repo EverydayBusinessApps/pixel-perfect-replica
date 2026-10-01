@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, PageHeader, Panel } from "@/components/AppShell";
+import { AppShell, EmptyState, PageHeader, Panel } from "@/components/AppShell";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts, isDrink } from "@/lib/insights";
 import { stock } from "@/lib/data";
@@ -144,6 +144,26 @@ function InsightsPage() {
           </div>
         </Panel>
       </div>
+
+      <Panel title="Ingredient reuse map" aside={<span className="text-xs font-bold text-muted-foreground">Dishes per ingredient</span>} collapsible>
+        {usage.length === 0 ? (
+          <EmptyState title="No recipes yet" body="Add 3 dishes with their ingredients to see which buys work hardest." />
+        ) : (
+        <div className="space-y-2">
+          {usage.map((u) => {
+            const n = u.dishes.length;
+            const tag = n >= 3 ? { l: "Workhorse · 3+ dishes", c: "bg-good/15 text-good" } : n === 1 ? { l: "Single-use buy", c: "bg-warn/15 text-warn" } : { l: "2 dishes", c: "bg-muted text-muted-foreground" };
+            return (
+              <div key={u.name} className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-3">
+                <span className="w-36 shrink-0 text-sm font-extrabold">{u.name}</span>
+                <div className="flex flex-1 gap-1">{u.dishes.map((d) => <span key={d} title={d} className={`h-3 w-6 rounded-sm ${n >= 3 ? "bg-good" : n === 1 ? "bg-warn" : "bg-primary/40"}`} />)}</div>
+                <span className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${tag.c}`}>{tag.l}</span>
+              </div>
+            );
+          })}
+        </div>
+        )}
+      </Panel>
 
       <Panel title="Costs on the rise" aside={<span className="text-xs font-bold text-muted-foreground">Last 3 months</span>} collapsible>
         <p className="mb-3 text-sm text-muted-foreground">Ingredient costs that have crept up, so you know what to watch before your next menu print.</p>
