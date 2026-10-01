@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
 function Dashboard() {
   const alerts = [...stock].sort((a, b) => a.days - b.days).slice(0, 3);
   const glance = [...stock].sort((a, b) => a.days - b.days).slice(0, 4);
-  const hero = specials[0];
+  const hero = specials[0]!;
   const max = Math.max(...forecast.week.map((d) => d.covers));
 
   return (
