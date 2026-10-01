@@ -37,7 +37,7 @@ function ForecastPage() {
         <div className="grid gap-3 sm:grid-cols-3">
           {forecast.next3.map((d) => (
             <div key={d.day} className="rounded-2xl border border-border bg-card p-5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gold">{d.day}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gold-deep">{d.day}</p>
               <p className="mt-1 font-display text-3xl font-bold">{d.covers}</p>
               <p className="text-xs font-semibold text-muted-foreground">{d.weather}</p>
               {d.event && <p className="mt-2 inline-block rounded-md bg-warn/15 px-2 py-1 text-[10px] font-bold text-warn">★ {d.event}</p>}

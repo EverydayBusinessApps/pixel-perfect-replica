@@ -96,7 +96,7 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Panel title="Stock at a glance" aside={<Link to="/stock" className="text-xs font-bold text-gold">View all →</Link>} className="lg:col-span-2">
+        <Panel title="Stock at a glance" aside={<Link to="/stock" className="text-xs font-bold text-gold-deep">View all →</Link>} className="lg:col-span-2">
           <div className="grid gap-3 sm:grid-cols-2">
             {glance.map((i) => {
               const st = statusOf(i.days);
