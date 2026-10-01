@@ -104,7 +104,7 @@ function InsightsPage() {
       </Panel>
 
       <div className="grid items-start gap-6 lg:grid-cols-2">
-        <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible>
+        <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible className={pairSpan(sharedIsOpen, singleIsOpen)} open={sharedIsOpen} onToggle={setSharedOpen}>
           <p className="mb-3 text-sm text-muted-foreground">Used in more than one dish — less risk of waste.</p>
           <div className="space-y-2">
             {shared.map((u) => (
@@ -119,7 +119,7 @@ function InsightsPage() {
           </div>
         </Panel>
 
-        <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>} collapsible>
+        <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>} collapsible className={pairSpan(sharedIsOpen, singleIsOpen)} open={singleIsOpen} onToggle={setSingleOpen}>
           <p className="mb-3 text-sm text-muted-foreground">If that dish stops selling, these end up in the bin. Sorted by how much each costs you.</p>
           <div className="space-y-2">
             {single.map((u) => {
