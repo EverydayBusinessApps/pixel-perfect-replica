@@ -90,16 +90,38 @@ export function PageHeader({ eyebrow, title, children }: { eyebrow: string; titl
   );
 }
 
-export function Panel({ title, aside, children, className = "" }: { title?: string; aside?: ReactNode; children: ReactNode; className?: string }) {
+export function Panel({ title, aside, children, className = "", collapsible = false }: { title?: string; aside?: ReactNode; children: ReactNode; className?: string; collapsible?: boolean }) {
+  const isMobile = useIsMobile();
+  const [open, setOpen] = useState(!isMobile);
+  const header = (
+    <div className="mb-5 flex items-center justify-between gap-3">
+      <h3 className="text-xl font-bold">{title}</h3>
+      <div className="flex items-center gap-2">
+        {aside}
+        {collapsible && (
+          <span aria-hidden className={`grid size-7 shrink-0 place-items-center rounded-full border border-border text-xs font-bold text-gold-deep transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+        )}
+      </div>
+    </div>
+  );
+  if (!collapsible || !title) {
+    return (
+      <section className={`glass rounded-[2rem] p-5 sm:p-7 ${className}`}>
+        {title && header}
+        {children}
+      </section>
+    );
+  }
   return (
     <section className={`glass rounded-[2rem] p-5 sm:p-7 ${className}`}>
-      {title && (
-        <div className="mb-5 flex items-center justify-between gap-3">
-          <h3 className="text-xl font-bold">{title}</h3>
+      <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left">
+        <h3 className="text-xl font-bold">{title}</h3>
+        <span className="flex items-center gap-2">
           {aside}
-        </div>
-      )}
-      {children}
+          <span aria-hidden className={`grid size-7 shrink-0 place-items-center rounded-full border border-border text-xs font-bold text-gold-deep transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+        </span>
+      </button>
+      {open && <div className="mt-5">{children}</div>}
     </section>
   );
 }
