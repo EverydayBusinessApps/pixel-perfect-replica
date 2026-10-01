@@ -94,32 +94,37 @@ export function Panel({ title, aside, children, className = "", collapsible = fa
   const isMobile = useIsMobile();
   const [toggled, setToggled] = useState<boolean | null>(null);
   const open = toggled ?? !isMobile;
-  const header = (
-    <div className="mb-5 flex items-center justify-between gap-3">
-      <h3 className="text-xl font-bold">{title}</h3>
-      <div className="flex items-center gap-2">
-        {aside}
-        {collapsible && (
-          <span aria-hidden className={`grid size-7 shrink-0 place-items-center rounded-full border border-border text-xs font-bold text-gold-deep transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
-        )}
-      </div>
-    </div>
-  );
+
   if (!collapsible || !title) {
     return (
       <section className={`glass rounded-[2rem] p-5 sm:p-7 ${className}`}>
-        {title && header}
+        {title && (
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <h3 className="text-xl font-bold">{title}</h3>
+            {aside && <span className="flex items-center gap-2">{aside}</span>}
+          </div>
+        )}
         {children}
       </section>
     );
   }
+
+  const toggle = (
+    <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-muted px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide text-gold-deep">
+      {open ? "Hide" : "Show"}
+      <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" className={`size-3.5 transition-transform duration-200 ${open ? "" : "-rotate-90"}`}>
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </span>
+  );
+
   return (
     <section className={`glass rounded-[2rem] p-5 sm:p-7 ${className}`}>
-      <button type="button" onClick={() => setToggled(!open)} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left">
+      <button type="button" onClick={() => setToggled(!open)} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left transition-colors hover:bg-muted/40">
         <h3 className="text-xl font-bold">{title}</h3>
         <span className="flex items-center gap-2">
           {aside}
-          <span aria-hidden className={`grid size-7 shrink-0 place-items-center rounded-full border border-border text-xs font-bold text-gold-deep transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+          {toggle}
         </span>
       </button>
       {open && <div className="mt-5">{children}</div>}
