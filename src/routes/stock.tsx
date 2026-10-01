@@ -55,7 +55,7 @@ function StockPage() {
                         <span className={`size-3 shrink-0 rounded-full ${s.dot}`} />
                         <div className="min-w-0">
                           <p className="truncate font-extrabold">{i.name}</p>
-                          <p className="text-xs font-semibold text-muted-foreground">{i.qty} · {gone ? "marked as waste" : `${i.days} day${i.days > 1 ? "s" : ""} until spoilage`}</p>
+                          <p className="text-xs font-semibold text-muted-foreground">{i.qty} · cost €{i.cost.toFixed(2)} · {gone ? "marked as waste" : `${i.days} day${i.days > 1 ? "s" : ""} until spoilage`}</p>
                         </div>
                         <span className={`ml-auto shrink-0 rounded-md px-2 py-1 text-[10px] font-bold uppercase ${s.badge}`}>{s.label}</span>
                       </div>
