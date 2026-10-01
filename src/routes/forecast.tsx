@@ -1,25 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader, Panel } from "@/components/AppShell";
-import { forecast } from "@/lib/data";
+import { forecast, localEvents, weekPlan } from "@/lib/data";
 
 export const Route = createFileRoute("/forecast")({
   head: () => ({
     meta: [
       { title: "Busy days ahead — KitchenSense" },
-      { name: "description", content: "How busy you'll be today, the next 3 days and next week, based on weather, events and past trade." },
+      { name: "description", content: "How busy you'll be, what to prep and order, and local events coming up." },
       { property: "og:title", content: "Busy days ahead — KitchenSense" },
-      { property: "og:description", content: "Demand forecast for your café in plain language." },
+      { property: "og:description", content: "Demand forecast, prep plan and local events for your café." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ForecastPage,
 });
 
+const kindStyle: Record<string, string> = {
+  Local: "bg-gold/20 text-gold-deep",
+  National: "bg-primary/10 text-primary",
+  Sport: "bg-good/15 text-good",
+};
+
 function ForecastPage() {
-  const max = Math.max(...forecast.week.map((d) => d.covers));
+  const max = Math.max(...weekPlan.map((d) => d.covers));
   const t = forecast.today;
+  const next = [...localEvents].sort((a, b) => b.lift - a.lift)[0]!;
   return (
     <AppShell>
-      <PageHeader eyebrow="Weather · events · past trade" title="Busy days ahead" />
+      <PageHeader eyebrow="Events · past trade · weather" title="Busy days ahead" />
 
       <section className="relative overflow-hidden rounded-[2.5rem] bg-primary p-6 text-primary-foreground shadow-hero sm:p-8">
         <div className="absolute -right-20 -top-20 size-80 rounded-full bg-gold/10 blur-3xl" />
@@ -27,28 +36,39 @@ function ForecastPage() {
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-gold">Today · {t.weather}</p>
             <p className="mt-3 font-display text-5xl font-extrabold">{t.covers} <span className="text-lg font-bold text-primary-foreground/60">customers</span></p>
-            <p className="mt-3 max-w-md text-sm text-primary-foreground/70">{t.note}</p>
+            <p className="mt-3 max-w-md text-sm text-primary-foreground/80">{t.note}</p>
+            <p className="mt-4 max-w-md border-t border-gold/40 pt-3 text-sm text-primary-foreground/90">
+              <span className="font-bold text-gold">Biggest thing coming:</span> {next.name} in {next.daysAway} days — expect about +{next.lift}% trade.
+            </p>
           </div>
           <span className="w-fit rounded-full bg-gold px-4 py-2 text-sm font-bold text-primary">+{t.change}% vs usual</span>
         </div>
       </section>
 
-      <Panel title="Next 3 days">
-        <div className="grid gap-3 sm:grid-cols-3">
-          {forecast.next3.map((d) => (
-            <div key={d.day} className="rounded-2xl border border-border bg-card p-5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gold-deep">{d.day}</p>
-              <p className="mt-1 font-display text-3xl font-bold">{d.covers}</p>
-              <p className="text-xs font-semibold text-muted-foreground">{d.weather}</p>
-              {d.event && <p className="mt-2 inline-block rounded-md bg-warn/15 px-2 py-1 text-[10px] font-bold text-warn">★ {d.event}</p>}
+      <Panel title="Local events coming up" aside={<span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Next 4 weeks</span>}>
+        <div className="grid gap-3 md:grid-cols-2">
+          {localEvents.map((e) => (
+            <div key={e.name} className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${kindStyle[e.kind]}`}>{e.kind}</span>
+                <span className="text-xs font-bold text-muted-foreground">in {e.daysAway} days</span>
+              </div>
+              <p className="mt-3 font-display text-xl font-bold">{e.name}</p>
+              <p className="text-xs font-semibold text-gold-deep">{e.dates} · about +{e.lift}% customers</p>
+              <p className="mt-2 text-sm text-muted-foreground">{e.impact}</p>
+              <ul className="mt-3 space-y-1 border-t border-border pt-3 text-sm">
+                {e.prep.map((p) => (
+                  <li key={p} className="flex gap-2"><span className="text-gold-deep">✓</span>{p}</li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
       </Panel>
 
-      <Panel title="Next week" aside={<span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">customers per day</span>}>
-        <div className="flex h-56 items-end gap-3">
-          {forecast.week.map((d) => (
+      <Panel title="This week: what to prep" aside={<span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">customers per day</span>}>
+        <div className="flex h-44 items-end gap-3">
+          {weekPlan.map((d) => (
             <div key={d.day} className="flex h-full flex-1 flex-col justify-end gap-2 text-center">
               <span className="text-xs font-bold">{d.covers}</span>
               <div className={`rounded-t-lg ${d.covers === max ? "bg-gold" : "bg-primary/80"}`} style={{ height: `${(d.covers / max) * 80}%` }} />
@@ -56,9 +76,15 @@ function ForecastPage() {
             </div>
           ))}
         </div>
-        <p className="mt-6 border-t border-border pt-5 text-sm text-muted-foreground">
-          Weekend will be your busiest stretch — the rugby on Saturday usually brings about 40% more people. Monday and Tuesday are quiet, so order lighter for early next week.
-        </p>
+        <ul className="mt-6 divide-y divide-border border-t border-border">
+          {weekPlan.map((d) => (
+            <li key={d.day} className="grid grid-cols-[3rem_minmax(0,1fr)] gap-3 py-3 text-sm sm:grid-cols-[3rem_9rem_minmax(0,1fr)]">
+              <span className="font-bold">{d.day}</span>
+              <span className="text-xs font-semibold text-gold-deep sm:text-sm">{d.why}</span>
+              <span className="col-span-2 text-muted-foreground sm:col-span-1">{d.action}</span>
+            </li>
+          ))}
+        </ul>
       </Panel>
     </AppShell>
   );

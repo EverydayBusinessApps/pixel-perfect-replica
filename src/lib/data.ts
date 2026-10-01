@@ -83,3 +83,62 @@ export const forecast = {
 };
 
 export const wasteRisk = 62;
+
+export type LocalEvent = {
+  name: string;
+  dates: string;
+  daysAway: number;
+  lift: number;
+  kind: "National" | "Local" | "Sport";
+  impact: string;
+  prep: string[];
+};
+
+export const localEvents: LocalEvent[] = [
+  {
+    name: "Rugby match nearby",
+    dates: "Sat 3 Oct",
+    daysAway: 2,
+    lift: 40,
+    kind: "Sport",
+    impact: "Pre-match brunch rush 10:00–13:00, quiet once the match starts.",
+    prep: ["Extra 30 eggs and 2 kg bacon", "Two baristas on 10:00–13:00", "Skip the afternoon bake"],
+  },
+  {
+    name: "Town Arts & Food Festival",
+    dates: "Sat 17 – Sun 25 Oct",
+    daysAway: 16,
+    lift: 55,
+    kind: "Local",
+    impact: "A full week of visitors. Takeaway coffee and grab-and-go food sell fastest.",
+    prep: ["Order takeaway cups and lids early (+60%)", "Pre-wrap sandwiches each morning", "Book extra weekend staff now", "Short festival specials board"],
+  },
+  {
+    name: "Halloween & mid-term break",
+    dates: "Mon 26 Oct – Sat 31 Oct",
+    daysAway: 25,
+    lift: 25,
+    kind: "National",
+    impact: "Schools off all week — more families and kids' orders, especially mornings.",
+    prep: ["Stock up on kids' breakfast items", "Pumpkin spice latte & barmbrack as specials", "Spooky bakes for the counter on the 30th–31st"],
+  },
+  {
+    name: "October Bank Holiday",
+    dates: "Mon 26 Oct",
+    daysAway: 25,
+    lift: 30,
+    kind: "National",
+    impact: "Monday trades like a Saturday — don't order light for it.",
+    prep: ["Order as for a weekend", "Full brunch menu all day"],
+  },
+];
+
+export const weekPlan = [
+  { day: "Thu", covers: 142, why: "Rain", action: "Soup on early, extra milk for hot drinks" },
+  { day: "Fri", covers: 156, why: "Rain + payday", action: "Prep 20% more lunches" },
+  { day: "Sat", covers: 210, why: "Rugby match", action: "Brunch rush 10–1, two baristas" },
+  { day: "Sun", covers: 188, why: "Usual Sunday", action: "Normal brunch prep" },
+  { day: "Mon", covers: 96, why: "Quiet start", action: "Use Sunday surplus in specials, order light" },
+  { day: "Tue", covers: 104, why: "Quiet", action: "Half batch of bakes" },
+  { day: "Wed", covers: 118, why: "Market day", action: "Standard prep" },
+];
