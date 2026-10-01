@@ -24,6 +24,65 @@ export function spoilRadar(items: StockItem[] = stock) {
 export const radarAtRisk = (items: ReturnType<typeof spoilRadar>) =>
   items.reduce((a, i) => a + i.idea.eur, 0);
 
+export interface SuggestedSpecial {
+  dish: string;
+  price: number;
+  ingredients: ReturnType<typeof spoilRadar>;
+  days: number;
+  eur: number;
+  note: string;
+}
+
+/** Groups compatible at-risk ingredients into fewer, practical specials. */
+export function suggestedSpecials(items: ReturnType<typeof spoilRadar>): SuggestedSpecial[] {
+  const remaining = new Map(items.map((item) => [item.name, item]));
+  const suggestions: SuggestedSpecial[] = [];
+
+  const combine = (names: string[], dish: string, price: number, note: string) => {
+    const ingredients = names.flatMap((name) => {
+      const item = remaining.get(name);
+      return item ? [item] : [];
+    });
+    if (ingredients.length < 2) return;
+
+    ingredients.forEach((item) => remaining.delete(item.name));
+    suggestions.push({
+      dish,
+      price,
+      ingredients,
+      days: Math.min(...ingredients.map((item) => item.days)),
+      eur: ingredients.reduce((total, item) => total + item.cost, 0),
+      note,
+    });
+  };
+
+  combine(
+    ["Chicken breast", "Avocados", "Lettuce", "Sourdough"],
+    "Chicken, Avo & Lettuce Club",
+    12.5,
+    "One special uses four ingredients that need attention.",
+  );
+  combine(
+    ["Croissants", "Milk"],
+    "Almond Croissant Bake",
+    4.2,
+    "A next-day bake turns leftover pastries into a counter special.",
+  );
+
+  remaining.forEach((item) => {
+    suggestions.push({
+      dish: item.idea.dish,
+      price: item.idea.price,
+      ingredients: [item],
+      days: item.days,
+      eur: item.cost,
+      note: `A simple way to use ${item.name.toLowerCase()} before it spoils.`,
+    });
+  });
+
+  return suggestions.sort((a, b) => a.days - b.days || b.eur - a.eur);
+}
+
 /** Plate cost for each suggested special — used only for specials price hints (printed menu stays fixed). */
 export const specialCost: Record<string, number> = {
   "Chicken, Bacon & Avo Toastie": 4.0,

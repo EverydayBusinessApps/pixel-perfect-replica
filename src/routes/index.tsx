@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, EmptyState, PageHeader, Panel } from "@/components/AppShell";
-import { radarAtRisk, spoilRadar } from "@/lib/kitchen";
+import { radarAtRisk, spoilRadar, suggestedSpecials } from "@/lib/kitchen";
 import { forecast, specials, stock, statusOf, statusStyles, wasteRisk } from "@/lib/data";
 
 export const Route = createFileRoute("/")({
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const radar = spoilRadar();
+  const suggestions = suggestedSpecials(radar);
   const [picked, setPicked] = useState<Record<string, boolean>>({});
   const glance = [...stock].sort((a, b) => a.days - b.days).slice(0, 4);
   const hero = specials[0]!;
@@ -41,23 +42,25 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Panel title="Spoil radar · use in 48h" aside={<span className="rounded-full bg-danger/15 px-3 py-1 text-[11px] font-bold text-danger">€{radarAtRisk(radar).toFixed(2)} at risk</span>} className="lg:col-span-2">
+        <Panel title="Suggested specials · use stock within 48h" aside={<span className="rounded-full bg-danger/15 px-3 py-1 text-[11px] font-bold text-danger">€{radarAtRisk(radar).toFixed(2)} at risk</span>} className="lg:col-span-2">
           {radar.length === 0 ? (
             <EmptyState icon="◎" title="Nothing on the radar" body="Add 5 pantry items with use-by days to get your first special suggestion." action={<Link to="/stock" className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground">Add pantry items</Link>} />
           ) : (
           <div className="space-y-3">
-            {radar.map((i) => {
-              const s = statusStyles[statusOf(i.days)];
-              const on = picked[i.name];
+            <p className="text-xs font-semibold text-muted-foreground">Smart matching has turned {radar.length} at-risk ingredients into {suggestions.length} practical specials.</p>
+            {suggestions.map((idea) => {
+              const s = statusStyles[statusOf(idea.days)];
+              const on = picked[idea.dish];
               return (
-                <div key={i.name} className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-nowrap sm:gap-4">
-                  <span className={`grid size-11 shrink-0 place-items-center rounded-xl text-sm font-extrabold ${s.badge}`}>{i.days === 1 ? "24h" : "48h"}</span>
+                <div key={idea.dish} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center sm:gap-4">
+                  <span className={`grid size-11 shrink-0 place-items-center rounded-xl text-sm font-extrabold ${s.badge}`}>{idea.days === 1 ? "24h" : "48h"}</span>
                   <div className="min-w-0 flex-1">
-                    <p className="font-extrabold">{i.name} <span className="font-semibold text-muted-foreground">· {i.qty}</span></p>
-                    <p className="text-xs font-semibold text-gold-deep">✦ {i.idea.dish} · €{i.idea.price.toFixed(2)}</p>
-                    <p className="mt-0.5 text-[11px] font-bold text-danger">€{i.idea.eur.toFixed(2)} binned if unused</p>
+                    <p className="font-extrabold">{idea.dish} <span className="font-semibold text-muted-foreground">· €{idea.price.toFixed(2)}</span></p>
+                    <p className="text-xs font-semibold text-gold-deep">✦ {idea.ingredients.map((item) => item.name).join(" · ")}</p>
+                    <p className="mt-0.5 text-[11px] font-semibold text-muted-foreground">{idea.note}</p>
+                    <p className="mt-0.5 text-[11px] font-bold text-danger">Saves up to €{idea.eur.toFixed(2)} of stock</p>
                   </div>
-                  <button onClick={() => setPicked({ ...picked, [i.name]: !on })} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold ${on ? "bg-good text-primary-foreground" : "bg-primary text-primary-foreground"}`}>{on ? "✓ On specials" : "Make it a special"}</button>
+                  <button onClick={() => setPicked({ ...picked, [idea.dish]: !on })} className={`col-span-2 w-full shrink-0 rounded-full px-4 py-2 text-xs font-bold sm:col-span-1 sm:w-auto ${on ? "bg-good text-primary-foreground" : "bg-primary text-primary-foreground"}`}>{on ? "✓ On specials" : "Make it a special"}</button>
                 </div>
               );
             })}
