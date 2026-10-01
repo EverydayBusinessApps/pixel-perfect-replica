@@ -145,7 +145,7 @@ function InsightsPage() {
         </div>
       </Panel>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">You print your menus, so a price change is only flagged when a dish is about to stop paying for itself.</p>
           {alerts.length === 0 ? (
