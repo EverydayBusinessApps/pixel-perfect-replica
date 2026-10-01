@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, EmptyState, PageHeader, Panel } from "@/components/AppShell";
-import { spoilRadar } from "@/lib/kitchen";
+import { radarAtRisk, spoilRadar } from "@/lib/kitchen";
 import { forecast, specials, stock, statusOf, statusStyles, wasteRisk } from "@/lib/data";
 
 export const Route = createFileRoute("/")({
@@ -41,7 +41,7 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Panel title="Spoil radar · use in 48h" aside={<span className="rounded-full bg-danger/15 px-3 py-1 text-[11px] font-bold text-danger">{radar.length} to use</span>} className="lg:col-span-2">
+        <Panel title="Spoil radar · use in 48h" aside={<span className="rounded-full bg-danger/15 px-3 py-1 text-[11px] font-bold text-danger">€{radarAtRisk(radar).toFixed(2)} at risk</span>} className="lg:col-span-2">
           {radar.length === 0 ? (
             <EmptyState icon="◎" title="Nothing on the radar" body="Add 5 pantry items with use-by days to get your first special suggestion." action={<Link to="/stock" className="rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground">Add pantry items</Link>} />
           ) : (
@@ -55,6 +55,7 @@ function Dashboard() {
                   <div className="min-w-0 flex-1">
                     <p className="font-extrabold">{i.name} <span className="font-semibold text-muted-foreground">· {i.qty}</span></p>
                     <p className="text-xs font-semibold text-gold-deep">✦ {i.idea.dish} · €{i.idea.price.toFixed(2)}</p>
+                    <p className="mt-0.5 text-[11px] font-bold text-danger">€{i.idea.eur.toFixed(2)} binned if unused</p>
                   </div>
                   <button onClick={() => setPicked({ ...picked, [i.name]: !on })} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold ${on ? "bg-good text-primary-foreground" : "bg-primary text-primary-foreground"}`}>{on ? "✓ On specials" : "Make it a special"}</button>
                 </div>
