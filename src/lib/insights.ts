@@ -5,6 +5,7 @@ export interface MenuItem {
   cost: number; // ingredient cost per plate, today
   costPrev: number; // ingredient cost per plate, 3 months ago
   ingredients: string[];
+  pairsWith?: string[]; // dishes this is usually ordered alongside
 }
 
 export const weeks = ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"];
@@ -19,6 +20,7 @@ export const menu: MenuItem[] = [
   { name: "Croissant", sold: [160, 150, 148, 141, 139, 130, 128, 124], price: 3.2, cost: 0.95, costPrev: 0.8, ingredients: ["Croissants"] },
   { name: "Caesar Wrap", sold: [64, 60, 58, 51, 49, 44, 40, 38], price: 11.0, cost: 3.9, costPrev: 3.3, ingredients: ["Chicken breast", "Lettuce", "Parmesan", "Tortilla wraps"] },
   { name: "Mocha", sold: [120, 128, 135, 142, 150, 158, 165, 172], price: 4.4, cost: 0.85, costPrev: 0.75, ingredients: ["Espresso beans", "Milk"] },
+  { name: "Kids Breakfast", sold: [64, 58, 61, 66, 60, 63, 59, 62], price: 5.5, cost: 4.6, costPrev: 4.2, ingredients: ["Bacon rashers", "Free-range eggs", "Sourdough"], pairsWith: ["Full Irish Breakfast", "Flat White"] },
 ];
 
 export const total = (m: MenuItem) => m.sold.reduce((a, b) => a + b, 0);
