@@ -25,7 +25,7 @@ const kindStyle: Record<string, string> = {
 function ForecastPage() {
   const max = Math.max(...weekPlan.map((d) => d.covers));
   const t = forecast.today;
-  const next = [...localEvents].sort((a, b) => b.lift - a.lift)[0];
+  const next = [...localEvents].sort((a, b) => b.lift - a.lift)[0]!;
   return (
     <AppShell>
       <PageHeader eyebrow="Events · past trade · weather" title="Busy days ahead" />
