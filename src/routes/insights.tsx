@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader, Panel } from "@/components/AppShell";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts, isDrink } from "@/lib/insights";
 import { stock } from "@/lib/data";
 
@@ -31,6 +33,19 @@ function Spark({ data }: { data: number[] }) {
 }
 
 function InsightsPage() {
+  const isMobile = useIsMobile();
+  const [sharedOpen, setSharedOpen] = useState<boolean | null>(null);
+  const [singleOpen, setSingleOpen] = useState<boolean | null>(null);
+  const [priceOpen, setPriceOpen] = useState<boolean | null>(null);
+  const [leadersOpen, setLeadersOpen] = useState<boolean | null>(null);
+  const sharedIsOpen = sharedOpen ?? !isMobile;
+  const singleIsOpen = singleOpen ?? !isMobile;
+  const priceIsOpen = priceOpen ?? !isMobile;
+  const leadersIsOpen = leadersOpen ?? !isMobile;
+  // When one panel of a pair is open and the other closed, each takes the full
+  // width; when they match, they sit side by side.
+  const pairSpan = (a: boolean, b: boolean) => (a === b ? "" : "lg:col-span-2");
+
   const ranked = [...menu].sort((a, b) => total(b) - total(a));
   const usage = ingredientUsage();
   const shared = usage.filter((u) => u.dishes.length > 1);
@@ -89,7 +104,7 @@ function InsightsPage() {
       </Panel>
 
       <div className="grid items-start gap-6 lg:grid-cols-2">
-        <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible>
+        <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible className={pairSpan(sharedIsOpen, singleIsOpen)} open={sharedIsOpen} onToggle={setSharedOpen}>
           <p className="mb-3 text-sm text-muted-foreground">Used in more than one dish — less risk of waste.</p>
           <div className="space-y-2">
             {shared.map((u) => (
@@ -104,7 +119,7 @@ function InsightsPage() {
           </div>
         </Panel>
 
-        <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>} collapsible>
+        <Panel title="Bought for one dish" aside={<span className="rounded-full bg-warn/15 px-3 py-1 text-[11px] font-bold text-warn">{single.length} at risk</span>} collapsible className={pairSpan(sharedIsOpen, singleIsOpen)} open={singleIsOpen} onToggle={setSingleOpen}>
           <p className="mb-3 text-sm text-muted-foreground">If that dish stops selling, these end up in the bin. Sorted by how much each costs you.</p>
           <div className="space-y-2">
             {single.map((u) => {
@@ -146,7 +161,7 @@ function InsightsPage() {
       </Panel>
 
       <div className="grid items-start gap-6 lg:grid-cols-2">
-        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible>
+        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible className={pairSpan(priceIsOpen, leadersIsOpen)} open={priceIsOpen} onToggle={setPriceOpen}>
           <p className="mb-3 text-sm text-muted-foreground">You print your menus, so a price change is only flagged when a dish is about to stop paying for itself.</p>
           {alerts.length === 0 ? (
             <div className="rounded-xl border border-good/30 bg-good/10 p-4">
@@ -170,7 +185,7 @@ function InsightsPage() {
           )}
         </Panel>
 
-        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>} collapsible>
+        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>} collapsible className={pairSpan(priceIsOpen, leadersIsOpen)} open={leadersIsOpen} onToggle={setLeadersOpen}>
           <p className="mb-3 text-sm text-muted-foreground">Thin margins that are fine — they arrive alongside bigger orders.</p>
           <div className="space-y-2">
             {leaders.map((l) => (

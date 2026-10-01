@@ -90,10 +90,11 @@ export function PageHeader({ eyebrow, title, children }: { eyebrow: string; titl
   );
 }
 
-export function Panel({ title, aside, children, className = "", collapsible = false }: { title?: string; aside?: ReactNode; children: ReactNode; className?: string; collapsible?: boolean }) {
+export function Panel({ title, aside, children, className = "", collapsible = false, open: openProp, onToggle }: { title?: string; aside?: ReactNode; children: ReactNode; className?: string; collapsible?: boolean; open?: boolean; onToggle?: (open: boolean) => void }) {
   const isMobile = useIsMobile();
   const [toggled, setToggled] = useState<boolean | null>(null);
-  const open = toggled ?? !isMobile;
+  const uncontrolled = openProp === undefined;
+  const open = uncontrolled ? (toggled ?? !isMobile) : openProp;
 
   if (!collapsible || !title) {
     return (
@@ -120,7 +121,7 @@ export function Panel({ title, aside, children, className = "", collapsible = fa
 
   return (
     <section className={`glass rounded-[2rem] p-5 sm:p-7 ${className}`}>
-      <button type="button" onClick={() => setToggled(!open)} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left transition-colors hover:bg-muted/40">
+      <button type="button" onClick={() => (uncontrolled ? setToggled(!open) : onToggle?.(!open))} aria-expanded={open} className="-m-1 flex w-full items-center justify-between gap-3 rounded-xl p-1 text-left transition-colors hover:bg-muted/40">
         <h3 className="text-xl font-bold">{title}</h3>
         <span className="flex items-center gap-2">
           {aside}
