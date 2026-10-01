@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader, Panel } from "@/components/AppShell";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts, isDrink } from "@/lib/insights";
 import { stock } from "@/lib/data";
 
@@ -31,6 +33,19 @@ function Spark({ data }: { data: number[] }) {
 }
 
 function InsightsPage() {
+  const isMobile = useIsMobile();
+  const [sharedOpen, setSharedOpen] = useState<boolean | null>(null);
+  const [singleOpen, setSingleOpen] = useState<boolean | null>(null);
+  const [priceOpen, setPriceOpen] = useState<boolean | null>(null);
+  const [leadersOpen, setLeadersOpen] = useState<boolean | null>(null);
+  const sharedIsOpen = sharedOpen ?? !isMobile;
+  const singleIsOpen = singleOpen ?? !isMobile;
+  const priceIsOpen = priceOpen ?? !isMobile;
+  const leadersIsOpen = leadersOpen ?? !isMobile;
+  // When one panel of a pair is open and the other closed, each takes the full
+  // width; when they match, they sit side by side.
+  const pairSpan = (a: boolean, b: boolean) => (a === b ? "" : "lg:col-span-2");
+
   const ranked = [...menu].sort((a, b) => total(b) - total(a));
   const usage = ingredientUsage();
   const shared = usage.filter((u) => u.dishes.length > 1);
