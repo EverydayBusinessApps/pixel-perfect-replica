@@ -197,7 +197,7 @@ function InsightsPage() {
                     <span className="rounded-md bg-danger/15 px-2 py-1 text-[10px] font-bold text-danger">Breakeven risk</span>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Margin {a.now}% now, {a.projected}% if costs rise again. Consider {eur(a.suggested)} at the next print.
+                    Margin {eur(a.price - a.cost)} now, {eur(a.price - a.projectedCost)} if costs rise again. Consider {eur(a.suggested)} at the next print.
                   </p>
                 </div>
               ))}
@@ -212,10 +212,10 @@ function InsightsPage() {
               <div key={l.name} className="rounded-xl border border-gold/40 bg-card p-3">
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-extrabold">{l.name}</p>
-                  <span className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-bold text-gold-deep">{l.now}% margin</span>
+                  <span className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-bold text-gold-deep">{eur(l.price - l.cost)} margin</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Usually ordered with <strong className="text-foreground">{l.partners.map((p) => p.name).join(" + ")}</strong> — the full basket pays <strong className="text-good">{l.basketMargin}%</strong>.
+                  Usually ordered with <strong className="text-foreground">{l.partners.map((p) => p.name).join(" + ")}</strong> — the full basket pays <strong className="text-good">{eur(l.basketProfit)}</strong>.
                 </p>
               </div>
             ))}
