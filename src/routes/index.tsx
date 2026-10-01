@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, EmptyState, PageHeader, Panel } from "@/components/AppShell";
+import { OwnerSpecialCreator } from "@/components/OwnerSpecialCreator";
 import { radarAtRisk, spoilRadar, suggestedSpecials } from "@/lib/kitchen";
 import { forecast, specials, stock, statusOf, statusStyles, wasteRisk } from "@/lib/data";
 
@@ -64,6 +65,7 @@ function Dashboard() {
                 </div>
               );
             })}
+            <OwnerSpecialCreator />
             <p className="pt-1 text-xs font-medium text-muted-foreground">Specials board only — your printed menu stays as it is.</p>
           </div>
           )}
