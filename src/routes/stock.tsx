@@ -26,7 +26,7 @@ function StockPage() {
       <PageHeader eyebrow={`${stock.length} ingredients`} title="Your stock" />
       <div className="flex flex-wrap gap-2 text-xs font-bold">
         {(["urgent", "watch", "good"] as const).map((k) => (
-          <span key={k} className={`flex items-center gap-2 rounded-full px-3 py-1.5 ${statusStyles[k].badge}`}>
+          <span key={k} className="flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-card-foreground shadow-sm">
             <span className={`size-2 rounded-full ${statusStyles[k].dot}`} />
             {statusStyles[k].label} · {stock.filter((i) => statusOf(i.days) === k).length}
           </span>
