@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, PageHeader, Panel } from "@/components/AppShell";
-import { menu, total, trend, margin, ingredientUsage, priceSuggestions, TARGET_MARGIN } from "@/lib/insights";
+import { menu, total, trend, margin, ingredientUsage, priceOf } from "@/lib/insights";
 import { stock } from "@/lib/data";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
     meta: [
       { title: "Menu insights — KitchenSense" },
-      { name: "description", content: "Eight weeks of sales: best and worst sellers, how dishes share ingredients, and price changes to protect your margins." },
+      { name: "description", content: "Eight weeks of sales: best and worst sellers, how dishes share ingredients, and which single-use items cost you the most." },
       { property: "og:title", content: "Menu insights — KitchenSense" },
-      { property: "og:description", content: "See what sells, what doesn't, and where rising costs are eating your margin." },
+      { property: "og:description", content: "See what sells, what doesn't, and what your menu shares with the pantry." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -34,9 +34,8 @@ function InsightsPage() {
   const ranked = [...menu].sort((a, b) => total(b) - total(a));
   const usage = ingredientUsage();
   const shared = usage.filter((u) => u.dishes.length > 1);
-  const single = usage.filter((u) => u.dishes.length === 1);
+  const single = usage.filter((u) => u.dishes.length === 1).sort((a, b) => priceOf(b.name) - priceOf(a.name));
   const inPantry = new Set(stock.map((s) => s.name));
-  const prices = priceSuggestions();
 
   return (
     <AppShell>
