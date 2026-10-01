@@ -5,23 +5,25 @@ export interface StockItem {
   qty: string;
   days: number;
   category: "Meat & Fish" | "Produce" | "Dairy" | "Bakery" | "Dry goods";
+  /** Purchase cost in euro for the quantity shown. */
+  cost: number;
 }
 
 export const stock: StockItem[] = [
-  { name: "Chicken breast", qty: "1.4 kg", days: 2, category: "Meat & Fish" },
-  { name: "Smoked salmon", qty: "600 g", days: 4, category: "Meat & Fish" },
-  { name: "Bacon rashers", qty: "2.2 kg", days: 6, category: "Meat & Fish" },
-  { name: "Lettuce", qty: "6 heads", days: 1, category: "Produce" },
-  { name: "Tomatoes", qty: "3.5 kg", days: 3, category: "Produce" },
-  { name: "Avocados", qty: "14", days: 2, category: "Produce" },
-  { name: "Potatoes", qty: "12 kg", days: 14, category: "Produce" },
-  { name: "Milk", qty: "18 L", days: 3, category: "Dairy" },
-  { name: "Cheddar", qty: "2 kg", days: 12, category: "Dairy" },
-  { name: "Free-range eggs", qty: "90", days: 9, category: "Dairy" },
-  { name: "Sourdough", qty: "5 loaves", days: 1, category: "Bakery" },
-  { name: "Croissants", qty: "16", days: 1, category: "Bakery" },
-  { name: "Espresso beans", qty: "4 kg", days: 30, category: "Dry goods" },
-  { name: "Oats", qty: "6 kg", days: 60, category: "Dry goods" },
+  { name: "Chicken breast", qty: "1.4 kg", days: 2, category: "Meat & Fish", cost: 12.4 },
+  { name: "Smoked salmon", qty: "600 g", days: 4, category: "Meat & Fish", cost: 22.5 },
+  { name: "Bacon rashers", qty: "2.2 kg", days: 6, category: "Meat & Fish", cost: 7.8 },
+  { name: "Lettuce", qty: "6 heads", days: 1, category: "Produce", cost: 4.8 },
+  { name: "Tomatoes", qty: "3.5 kg", days: 3, category: "Produce", cost: 6.3 },
+  { name: "Avocados", qty: "14", days: 2, category: "Produce", cost: 8.6 },
+  { name: "Potatoes", qty: "12 kg", days: 14, category: "Produce", cost: 5.5 },
+  { name: "Milk", qty: "18 L", days: 3, category: "Dairy", cost: 3.2 },
+  { name: "Cheddar", qty: "2 kg", days: 12, category: "Dairy", cost: 11.5 },
+  { name: "Free-range eggs", qty: "90", days: 9, category: "Dairy", cost: 14.5 },
+  { name: "Sourdough", qty: "5 loaves", days: 1, category: "Bakery", cost: 12.0 },
+  { name: "Croissants", qty: "16", days: 1, category: "Bakery", cost: 16.0 },
+  { name: "Espresso beans", qty: "4 kg", days: 30, category: "Dry goods", cost: 42.0 },
+  { name: "Oats", qty: "6 kg", days: 60, category: "Dry goods", cost: 9.8 },
 ];
 
 export const statusOf = (days: number): Status => (days <= 2 ? "urgent" : days <= 4 ? "watch" : "good");
