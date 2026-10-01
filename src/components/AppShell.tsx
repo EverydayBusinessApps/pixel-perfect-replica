@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const nav = [
   { to: "/", label: "Home", icon: "◈" },
