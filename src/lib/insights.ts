@@ -73,7 +73,7 @@ export function lossLeaders() {
       const partners = m.pairsWith!.map((n) => menu.find((x) => x.name === n)!).filter(Boolean);
       const price = m.price + partners.reduce((a, p) => a + p.price, 0);
       const cost = m.cost + partners.reduce((a, p) => a + p.cost, 0);
-      return { ...m, now: margin(m.price, m.cost), partners, basketMargin: margin(price, cost) };
+      return { ...m, now: margin(m.price, m.cost), partners, basketMargin: margin(price, cost), basketProfit: price - cost };
     });
 }
 
