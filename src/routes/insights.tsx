@@ -88,7 +88,7 @@ function InsightsPage() {
         </p>
       </Panel>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Panel title="Shared ingredients" aside={<span className="rounded-full bg-good/15 px-3 py-1 text-[11px] font-bold text-good">{shared.length} work hard</span>} collapsible>
           <p className="mb-3 text-sm text-muted-foreground">Used in more than one dish — less risk of waste.</p>
           <div className="space-y-2">
