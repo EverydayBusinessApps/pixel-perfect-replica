@@ -27,6 +27,9 @@ function StoryPage() {
   return (
     <AppShell>
       <PageHeader eyebrow="The Corner Pantry · demo story" title="Monday special from Sunday surplus" />
+      <Link to="/" className="-mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-muted px-4 py-2 text-xs font-bold text-foreground transition-colors hover:bg-gold/20">
+        <span aria-hidden="true">←</span> Back to home
+      </Link>
 
       <section className="relative overflow-hidden rounded-[2.5rem] bg-primary p-6 text-primary-foreground shadow-hero sm:p-8">
         <div className="absolute -right-20 -top-20 size-80 rounded-full bg-gold/10 blur-3xl" />
