@@ -35,7 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-foreground/60 transition-colors hover:bg-card/60"
                 activeProps={{ className: "!bg-primary !text-primary-foreground shadow-lg font-bold" }}
               >
-                <span className="text-gold">{n.icon}</span> {n.label}
+                <span className="text-gold-deep">{n.icon}</span> {n.label}
               </Link>
             ))}
           </nav>
@@ -76,7 +76,7 @@ export function PageHeader({ eyebrow, title, children }: { eyebrow: string; titl
   return (
     <header className="glass grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-[2rem] px-5 py-4 sm:px-6">
       <div className="min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-gold">{eyebrow}</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-gold-deep">{eyebrow}</p>
         <h1 className="truncate text-xl font-extrabold sm:text-2xl">{title}</h1>
       </div>
       <div className="flex shrink-0 items-center gap-3">

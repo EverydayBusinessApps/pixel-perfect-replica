@@ -42,7 +42,7 @@ function SettingsPage() {
             ))}
           </div>
         </Panel>
-        <Panel title="Staff" aside={<button className="text-xs font-bold text-gold">+ Invite</button>}>
+        <Panel title="Staff" aside={<button className="text-xs font-bold text-gold-deep">+ Invite</button>}>
           <div className="space-y-3">
             {staff.map((s) => (
               <div key={s.name} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4">
