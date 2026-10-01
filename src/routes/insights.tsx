@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, EmptyState, PageHeader, Panel } from "@/components/AppShell";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { menu, total, trend, margin, ingredientUsage, priceOf, lossLeaders, priceAlerts, isDrink } from "@/lib/insights";
+import { menu, total, trend, ingredientUsage, priceOf, lossLeaders, priceAlerts, isDrink } from "@/lib/insights";
 import { stock } from "@/lib/data";
 
 export const Route = createFileRoute("/insights")({
@@ -87,7 +87,7 @@ function InsightsPage() {
                       <span className="w-6 shrink-0 text-center font-display text-lg font-bold text-gold-deep">{idx + 1}</span>
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-extrabold">{m.name}</p>
-                        <p className="text-xs font-semibold text-muted-foreground">{total(m).toLocaleString()} sold · {margin(m.price, m.cost)}% margin</p>
+                        <p className="text-xs font-semibold text-muted-foreground">{total(m).toLocaleString()} sold · {eur(m.price - m.cost)} margin</p>
                       </div>
                       <div className="hidden sm:block"><Spark data={m.sold} /></div>
                       <span className={`shrink-0 rounded-md px-2 py-1 text-[10px] font-bold ${tag}`}>{t > 0 ? "↑" : t < 0 ? "↓" : "→"} {Math.abs(t)}%</span>
@@ -174,7 +174,7 @@ function InsightsPage() {
                 <p className="font-extrabold">{m.name}</p>
                 <span className="rounded-md bg-warn/15 px-2 py-1 text-[10px] font-bold text-warn">+{Math.round(((m.cost - m.costPrev) / m.costPrev) * 100)}%</span>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">Plate cost {eur(m.costPrev)} → {eur(m.cost)} · margin now {margin(m.price, m.cost)}%</p>
+              <p className="mt-1 text-xs text-muted-foreground">Plate cost {eur(m.costPrev)} → {eur(m.cost)} · margin now {eur(m.price - m.cost)}</p>
             </div>
           ))}
         </div>
@@ -197,7 +197,7 @@ function InsightsPage() {
                     <span className="rounded-md bg-danger/15 px-2 py-1 text-[10px] font-bold text-danger">Breakeven risk</span>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Margin {a.now}% now, {a.projected}% if costs rise again. Consider {eur(a.suggested)} at the next print.
+                    Margin {eur(a.price - a.cost)} now, {eur(a.price - a.projectedCost)} if costs rise again. Consider {eur(a.suggested)} at the next print.
                   </p>
                 </div>
               ))}
@@ -212,10 +212,10 @@ function InsightsPage() {
               <div key={l.name} className="rounded-xl border border-gold/40 bg-card p-3">
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-extrabold">{l.name}</p>
-                  <span className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-bold text-gold-deep">{l.now}% margin</span>
+                  <span className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-bold text-gold-deep">{eur(l.price - l.cost)} margin</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Usually ordered with <strong className="text-foreground">{l.partners.map((p) => p.name).join(" + ")}</strong> — the full basket pays <strong className="text-good">{l.basketMargin}%</strong>.
+                  Usually ordered with <strong className="text-foreground">{l.partners.map((p) => p.name).join(" + ")}</strong> — the full basket pays <strong className="text-good">{eur(l.basketProfit)}</strong>.
                 </p>
               </div>
             ))}
