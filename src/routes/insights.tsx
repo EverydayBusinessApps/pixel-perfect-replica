@@ -161,7 +161,7 @@ function InsightsPage() {
       </Panel>
 
       <div className="grid items-start gap-6 lg:grid-cols-2">
-        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible>
+        <Panel title="Price watch" aside={<span className="text-xs font-bold text-muted-foreground">Breakeven only</span>} collapsible className={pairSpan(priceIsOpen, leadersIsOpen)} open={priceIsOpen} onToggle={setPriceOpen}>
           <p className="mb-3 text-sm text-muted-foreground">You print your menus, so a price change is only flagged when a dish is about to stop paying for itself.</p>
           {alerts.length === 0 ? (
             <div className="rounded-xl border border-good/30 bg-good/10 p-4">
@@ -185,7 +185,7 @@ function InsightsPage() {
           )}
         </Panel>
 
-        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>} collapsible>
+        <Panel title="Loss leaders worth keeping" aside={<span className="text-xs font-bold text-muted-foreground">Basket view</span>} collapsible className={pairSpan(priceIsOpen, leadersIsOpen)} open={leadersIsOpen} onToggle={setLeadersOpen}>
           <p className="mb-3 text-sm text-muted-foreground">Thin margins that are fine — they arrive alongside bigger orders.</p>
           <div className="space-y-2">
             {leaders.map((l) => (
